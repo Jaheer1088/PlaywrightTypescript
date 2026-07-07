@@ -17,3 +17,5 @@ export const test = baseTest.extend<myFixture>({
         await use(new homePage(page));
     },
 })
+
+export { loginPage }
