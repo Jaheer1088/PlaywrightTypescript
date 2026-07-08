@@ -5,7 +5,11 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]  
-    
+
+  schedule:
+    - cron: '30 7 * * *'
+      timezone: "Asia/Kolkata"
+
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
