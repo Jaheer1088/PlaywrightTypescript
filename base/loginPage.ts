@@ -15,6 +15,7 @@ export class loginPage{
 
    async login(userName:string,password:string){
     await this.page.goto("https://automationexercise.com/login");
+    await this.page.waitForLoadState('load');
     await input({page:this.page,webElement:this.loginEmail,inputValue:userName});
     await input({page:this.page,webElement:this.loginPassword,inputValue:password});
     await click(this.page,this.loginSubmit);
