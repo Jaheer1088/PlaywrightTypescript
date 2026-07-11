@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { click, input } from "../utility/commonMethods"
+import { click, input, waitForElement } from "../utility/commonMethods"
 
 export class loginPage{
 
@@ -7,6 +7,7 @@ export class loginPage{
     readonly loginEmail = "form[action = '/login'] input[type = 'email']";
     readonly loginPassword = "form[action = '/login'] input[type = 'password']";
     readonly loginSubmit = "form[action = '/login'] button[type = 'submit']"
+    readonly logOutBtn = "a[href='/logout']";
 
 
    constructor(page:Page){
@@ -19,6 +20,7 @@ export class loginPage{
     await input({page:this.page,webElement:this.loginEmail,inputValue:userName});
     await input({page:this.page,webElement:this.loginPassword,inputValue:password});
     await click(this.page,this.loginSubmit);
+    await waitForElement(this.page,this.logOutBtn);
    }
 
   
