@@ -31,7 +31,31 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            max_attempts=2
+            attempt=1
+
+            while true; do
+              echo "Running Playwright tests attempt $attempt of $max_attempts"
+              if npx playwright test; then
+                echo "Playwright tests passed on attempt $attempt"
+                exit 0
+              fi
+
+              if [ "$attempt" -ge "$max_attempts" ]; then
+                echo "Playwright tests failed after $max_attempts attempts"
+                exit 1
+              fi
+
+              echo "Playwright tests failed. Retrying in 10 seconds..."
+              attempt=$((attempt + 1))
+              sleep 10
+            done
+          else
+            npx playwright test
+          fi
 
       # - name: Send workflow notification email
       #   if: always()
