@@ -1,4 +1,4 @@
-import { expect,Page } from "@playwright/test";
+import { Dialog, expect,Page } from "@playwright/test";
 import path from "path";
 
 
@@ -24,4 +24,11 @@ export async function uploadFile(page:Page,webElement:string,fileNameWithExtensi
 export async function getText(page:Page,webElement:string):Promise<string> {
    return await page.locator(webElement).innerText();
    
+}
+
+export async function alertHandle(page:Page) {
+     page.on("dialog",async(dialog:Dialog)=>{
+      await dialog.accept();
+      console.log("Alert accepted");
+   })  
 }

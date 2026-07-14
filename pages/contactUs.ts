@@ -1,11 +1,13 @@
 import { expect, Page } from "@playwright/test";
-import { click, getText, input, uploadFile } from "../utility/commonMethods";
+import { alertHandle, click, getText, input, uploadFile } from "../utility/commonMethods";
 
 
 export class ContactUs{
 
     readonly page:Page;
     private header:string = "GET IN TOUCH"
+    private successMessage = "Success! Your details have been submitted successfully."
+
     readonly contactUs_Btn = "a[href='/contact_us']"
     readonly formHeader = ".contact-form h2[class='title text-center']";
     readonly contactUsNameField = "input[name='name']";
@@ -14,6 +16,8 @@ export class ContactUs{
     readonly contactUsMessageField = "#message";
     readonly file = "input[name='upload_file']";
     readonly submit_Btn = "input[name='submit']";
+    readonly successMsg = "div[class='status alert alert-success']";
+    readonly homeBtn = "a[class='btn btn-success']";
 
 
     constructor(page:Page){
@@ -32,7 +36,10 @@ export class ContactUs{
 
         await uploadFile(this.page,this.file,"MedicalCertificate.pdf");
         await this.page.waitForTimeout(5000);
+        await alertHandle(this.page);
         await click(this.page,this.submit_Btn);
+        expect(await getText(this.page,this.successMsg)).toBe(this.successMessage);
+        await click(this.page,this.homeBtn);
 
     }
 
